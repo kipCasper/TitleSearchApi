@@ -28,6 +28,16 @@ namespace TitleSearchApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => 
+            {
+                options.AddPolicy("EnableCORS",
+                          builder =>
+                              {
+                                  builder.WithOrigins("http://localhost:4200",
+                                                      "http://www.contoso.com");
+                              });
+            });
+
             services.AddOptions();
             
             // requires using Microsoft.Extensions.Options
@@ -50,6 +60,8 @@ namespace TitleSearchApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("EnableCORS");
 
             app.UseHttpsRedirection();
 
